@@ -11,6 +11,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/*
+ * 한국어 줄바꿈. 브라우저 기본값은 음절 단위로 끊어서 "현장에 / 서" 처럼 낱말이 쪼개진다.
+ * keep-all 로 낱말(어절) 단위로만 끊고, 긴 영문/URL 은 overflow-wrap 으로 처리한다.
+ */
+body {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

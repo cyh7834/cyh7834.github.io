@@ -1,16 +1,16 @@
-import {useState} from 'react';
-import {Mail} from 'lucide-react';
-import {AspectRatio} from '@astryxdesign/core/AspectRatio';
-import {Center} from '@astryxdesign/core/Center';
-import {Button} from '@astryxdesign/core/Button';
-import {Grid} from '@astryxdesign/core/Grid';
-import {HStack, VStack} from '@astryxdesign/core/Stack';
-import {Icon} from '@astryxdesign/core/Icon';
-import {Section} from '@astryxdesign/core/Section';
-import {Heading, Text} from '@astryxdesign/core/Text';
-import {Token} from '@astryxdesign/core/Token';
-import {profile} from '../data/profile';
-import {GithubIcon} from './icons';
+import { useState } from "react";
+import { Mail } from "lucide-react";
+import { AspectRatio } from "@astryxdesign/core/AspectRatio";
+import { Center } from "@astryxdesign/core/Center";
+import { Button } from "@astryxdesign/core/Button";
+import { Grid } from "@astryxdesign/core/Grid";
+import { HStack, VStack } from "@astryxdesign/core/Stack";
+import { Icon } from "@astryxdesign/core/Icon";
+import { Section } from "@astryxdesign/core/Section";
+import { Heading, Text } from "@astryxdesign/core/Text";
+import { Token } from "@astryxdesign/core/Token";
+import { profile } from "../data/profile";
+import { GithubIcon } from "./icons";
 
 /** 프로필 이미지가 커질 수 있는 최대 폭. 열이 이보다 넓어도 원은 이 크기까지만 커진다. */
 const PROFILE_IMAGE_MAX_WIDTH = 340;
@@ -21,12 +21,28 @@ const PROFILE_IMAGE_MAX_WIDTH = 340;
  */
 export function AboutSection() {
   const [hasImageError, setHasImageError] = useState(false);
-  const hasPhoto = profile.avatarSrc !== '' && !hasImageError;
+  const hasPhoto = profile.avatarSrc !== "" && !hasImageError;
 
   return (
-    <Section id="about" data-scroll-anchor="true" variant="section" paddingBlock={10} width="100%">
-      <VStack gap={8} width="100%" maxWidth={1080} style={{marginInline: 'auto'}}>
-        <Grid columns={{minWidth: 280, max: 2}} gap={8} align="center" width="100%">
+    <Section
+      id="about"
+      data-scroll-anchor="true"
+      variant="section"
+      paddingBlock={10}
+      width="100%"
+    >
+      <VStack
+        gap={8}
+        width="100%"
+        maxWidth={1080}
+        style={{ marginInline: "auto" }}
+      >
+        <Grid
+          columns={{ minWidth: 280, max: 2 }}
+          gap={8}
+          align="center"
+          width="100%"
+        >
           {/* 프로필 이미지가 좌측. 폭이 좁아지면 Grid 가 1열로 접히면서 이미지가 위로 온다. */}
           <VStack gap={4} align="center" width="100%">
             <VStack width="100%" maxWidth={PROFILE_IMAGE_MAX_WIDTH}>
@@ -40,7 +56,9 @@ export function AboutSection() {
                   />
                 ) : (
                   /* 사진이 없을 때의 자리. Avatar 는 180px 까지만 커지므로 같은 크기의 원으로 대체한다. */
-                  <Center style={{backgroundColor: 'var(--color-background-muted)'}}>
+                  <Center
+                    style={{ backgroundColor: "var(--color-background-muted)" }}
+                  >
                     <Heading level={2} type="display-1" color="secondary">
                       {profile.name.slice(0, 1)}
                     </Heading>
@@ -48,15 +66,25 @@ export function AboutSection() {
                 )}
               </AspectRatio>
             </VStack>
-            <Text type="supporting" color="secondary" justify="center" display="block">
+            <Text
+              type="supporting"
+              color="secondary"
+              justify="center"
+              display="block"
+            >
               {profile.location}
             </Text>
           </VStack>
 
           <VStack gap={5}>
             <VStack gap={2}>
-              {profile.headline !== '' && (
-                <Text type="supporting" color="accent" weight="semibold" display="block">
+              {profile.headline !== "" && (
+                <Text
+                  type="supporting"
+                  color="accent"
+                  weight="semibold"
+                  display="block"
+                >
                   {profile.headline}
                 </Text>
               )}
@@ -65,27 +93,40 @@ export function AboutSection() {
               </Heading>
             </VStack>
 
-            <VStack gap={3} maxWidth={620}>
-              <Text type="body" display="block">
+            {/*
+              첫 문장은 리드(17px), 이어지는 문단은 본문(14px, secondary).
+              세 문단이 같은 크기로 쌓이면 읽어야 할 벽처럼 보여서 위계를 준다.
+              textWrap="pretty" 는 마지막 줄에 한 단어만 남는 것(orphan)을 막는다.
+            */}
+            <VStack gap={4} maxWidth={620}>
+              <Text type="body" size="lg" display="block" textWrap="pretty">
                 {profile.intro}
               </Text>
-              <Text type="body" color="secondary" display="block">
-                {profile.detail}
-              </Text>
+              <VStack gap={2}>
+                {profile.detail.map(paragraph => (
+                  <Text
+                    key={paragraph}
+                    type="body"
+                    color="secondary"
+                    display="block"
+                    textWrap="pretty">
+                    {paragraph}
+                  </Text>
+                ))}
+              </VStack>
             </VStack>
 
             <HStack gap={2} wrap="wrap">
               <Button
-                variant="primary"
-                label="프로젝트 보기"
-                onClick={() => {
-                  document.getElementById('work')?.scrollIntoView({behavior: 'smooth'});
-                }}
-              />
-              <Button
                 label="GitHub"
                 icon={<Icon icon={GithubIcon} />}
-                onClick={() => window.open(profile.links.github, '_blank', 'noopener,noreferrer')}
+                onClick={() =>
+                  window.open(
+                    profile.links.github,
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
               />
               <Button
                 variant="ghost"
@@ -104,7 +145,7 @@ export function AboutSection() {
             주로 다루는 것
           </Text>
           <HStack gap={1.5} wrap="wrap">
-            {profile.focus.map(item => (
+            {profile.focus.map((item) => (
               <Token key={item} label={item} size="md" />
             ))}
           </HStack>

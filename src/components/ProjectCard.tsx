@@ -39,7 +39,16 @@ export function ProjectCard({project, onSelect}: Props) {
               {project.tagline}
             </Text>
           </VStack>
-          <Text type="body" color="secondary" display="block" maxLines={3}>
+          {/*
+            maxLines 를 쓰면 Astryx 가 word-break: normal 을 직접 지정해서
+            index.css 의 keep-all 이 덮인다. 그래서 여기서만 다시 지정한다.
+          */}
+          <Text
+            type="body"
+            color="secondary"
+            display="block"
+            maxLines={3}
+            style={{wordBreak: 'keep-all'}}>
             {project.summary}
           </Text>
         </VStack>
