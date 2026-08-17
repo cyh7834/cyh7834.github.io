@@ -1,0 +1,23 @@
+@import '@astryxdesign/core/reset.css';
+@import '@astryxdesign/core/astryx.css';
+@import '@astryxdesign/theme-neutral/theme.css';
+
+:root {
+  /* TopNav 높이 + 여유. 앵커 스크롤 시 헤더에 가리지 않도록 사용한다. */
+  --site-nav-offset: 88px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 헤더 메뉴로 이동했을 때 섹션 제목이 헤더 아래로 숨지 않게 한다. */
+[data-scroll-anchor] {
+  scroll-margin-top: var(--site-nav-offset);
+}
