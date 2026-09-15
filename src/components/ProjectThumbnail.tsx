@@ -12,7 +12,7 @@ export function ProjectThumbnail({media}: Props) {
   }
 
   return (
-    <AspectRatio ratio={16 / 9} fit="cover">
+    <AspectRatio ratio={16 / 9} fit={media.fit ?? 'cover'}>
       <img
         src={media.src}
         alt={media.alt}

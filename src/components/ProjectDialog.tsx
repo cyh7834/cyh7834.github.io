@@ -10,6 +10,7 @@ import {Text} from '@astryxdesign/core/Text';
 import {Token} from '@astryxdesign/core/Token';
 import type {Project} from '../types';
 import {BulletList} from './BulletList';
+import {CaseNotes} from './CaseNotes';
 import {ConceptNotes} from './ConceptNotes';
 
 type Props = {
@@ -19,9 +20,14 @@ type Props = {
 
 /**
  * 프로젝트 상세 팝업.
- * 목록 카드는 대표 화면과 요약만 보여주고, 화면 전체·맡은 일·기술 스택·개념은 여기서 다룬다.
+ * 목록 카드는 대표 화면과 요약만 보여주고, 화면 전체·개선 사례·맡은 일·기술 스택·개념은 여기서 다룬다.
  */
 export function ProjectDialog({project, onClose}: Props) {
+  const meta = [project?.org, project?.role].filter(
+    (value): value is string => value !== undefined && value !== '',
+  );
+  const contributions = project?.contributions ?? [];
+
   return (
     <Dialog
       isOpen={project !== null}
@@ -41,60 +47,81 @@ export function ProjectDialog({project, onClose}: Props) {
           />
 
           <VStack gap={6} padding={5} isScrollable>
+            {/* 소속·역할은 적을 내용이 있는 프로젝트에서만 기간 옆에 붙인다. */}
             <HStack gap={2} wrap="wrap" vAlign="center">
               <Badge label={project.period} variant="neutral" />
-              <Text type="supporting" color="secondary">
-                {project.org} · {project.role}
-              </Text>
+              {meta.length > 0 && (
+                <Text type="supporting" color="secondary">
+                  {meta.join(' · ')}
+                </Text>
+              )}
             </HStack>
 
-            <Text type="body" color="secondary" display="block">
-              {project.summary}
-            </Text>
+            <VStack gap={2}>
+              <Text type="body" color="secondary" display="block">
+                {project.summary}
+              </Text>
+              {/* 담당 범위는 사례를 읽기 전에 알아야 하므로 요약 바로 아래에 둔다. */}
+              {project.scopeNote !== undefined && (
+                <Text type="supporting" color="secondary" display="block">
+                  담당 범위 — {project.scopeNote}
+                </Text>
+              )}
+            </VStack>
 
             <Divider />
 
-            <VStack gap={4}>
-              <Text type="label" weight="semibold" display="block">
-                화면
-              </Text>
-              {project.media.map(item => (
-                <VStack key={item.src} gap={1.5}>
-                  <AspectRatio ratio={16 / 9} fit="cover">
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      loading="lazy"
-                      style={{
-                        borderRadius: 'var(--radius-element)',
-                        border: 'var(--border-width) solid var(--color-border)',
-                      }}
-                    />
-                  </AspectRatio>
-                  <Text type="supporting" color="secondary" display="block">
-                    {item.caption}
-                  </Text>
-                </VStack>
-              ))}
-            </VStack>
-
-            <VStack gap={2}>
-              <Text type="label" weight="semibold" display="block">
-                맡은 일
-              </Text>
-              <BulletList items={project.contributions} />
-            </VStack>
-
-            <VStack gap={2}>
-              <Text type="label" weight="semibold" display="block">
-                기술 스택
-              </Text>
-              <HStack gap={1} wrap="wrap">
-                {project.stack.map(tech => (
-                  <Token key={tech} label={tech} size="sm" />
+            {/* 화면이 없는 프로젝트도 있으므로 제목까지 함께 감춘다. */}
+            {project.media.length > 0 && (
+              <VStack gap={4}>
+                <Text type="label" weight="semibold" display="block">
+                  화면
+                </Text>
+                {project.media.map(item => (
+                  <VStack key={item.src} gap={1.5}>
+                    <AspectRatio ratio={16 / 9} fit={item.fit ?? 'cover'}>
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        loading="lazy"
+                        style={{
+                          borderRadius: 'var(--radius-element)',
+                          border: 'var(--border-width) solid var(--color-border)',
+                        }}
+                      />
+                    </AspectRatio>
+                    <Text type="supporting" color="secondary" display="block">
+                      {item.caption}
+                    </Text>
+                  </VStack>
                 ))}
-              </HStack>
-            </VStack>
+              </VStack>
+            )}
+
+            {/* 담당 범위를 먼저 훑고(맡은 일), 그중 몇 건을 깊게 읽는(개선 사례) 순서로 둔다. */}
+            {contributions.length > 0 && (
+              <VStack gap={2}>
+                <Text type="label" weight="semibold" display="block">
+                  맡은 일
+                </Text>
+                <BulletList items={contributions} />
+              </VStack>
+            )}
+
+            {project.cases !== undefined && <CaseNotes cases={project.cases} />}
+
+            {project.stack.length > 0 && (
+              <VStack gap={2}>
+                <Text type="label" weight="semibold" display="block">
+                  기술 스택
+                </Text>
+                <HStack gap={1} wrap="wrap">
+                  {project.stack.map(tech => (
+                    <Token key={tech} label={tech} size="sm" />
+                  ))}
+                </HStack>
+              </VStack>
+            )}
 
             <ConceptNotes concepts={project.concepts} />
 
