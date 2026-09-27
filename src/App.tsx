@@ -8,6 +8,7 @@ import {navSections} from './data/profile';
 import {companyProjects, personalProjects} from './data/projects';
 import {useActiveSection} from './hooks/useActiveSection';
 import {AboutSection} from './components/AboutSection';
+import {CareerSection} from './components/CareerSection';
 import {ContactSection} from './components/ContactSection';
 import {PageSection} from './components/PageSection';
 import {ProjectCard} from './components/ProjectCard';
@@ -54,6 +55,7 @@ export default function App() {
         mobileNav={{breakpoint: 'md'}}>
         <VStack gap={0} width="100%">
           <AboutSection />
+          <CareerSection />
 
           <PageSection
             id="work"

@@ -4,6 +4,19 @@ export type NavSection = {
   label: string;
 };
 
+/** 경력 한 구간. 회사명은 적지 않고 기간·직무·주요 작업만 남긴다. */
+export type CareerEntry = {
+  /** 타임라인 눈금에 찍히는 시작 시점 */
+  start: string;
+  /** 마지막 구간에만 적는다. 이전 구간의 끝은 다음 구간의 시작 눈금이 대신한다. */
+  end?: string;
+  role: string;
+  /** 그 기간에 주로 다룬 분야 한 줄 */
+  domain: string;
+  /** 해당 기간에 해 온 작업. 프로젝트 이름이 아니라 작업 내용을 적는다. */
+  highlights: string[];
+};
+
 export type ProjectMedia = {
   src: string;
   alt: string;

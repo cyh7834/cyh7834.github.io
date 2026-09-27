@@ -18,6 +18,7 @@ npm run preview  # 빌드 결과 확인
 | 섹션 | 앵커 | 내용 |
 | --- | --- | --- |
 | About | `#about` | 프로필 이미지, 소개 글, 주요 키워드 |
+| Career | `#career` | 경력 타임라인 — 기간·직무·주요 작업 (회사명 없음) |
 | Work | `#work` | 회사 프로젝트 (카드 → 상세 팝업) |
 | Personal | `#personal` | 개인 프로젝트 (카드 → 상세 팝업) |
 | Contact | `#contact` | 연락처 |
@@ -31,6 +32,7 @@ src/
 │  ├─ SiteHeader.tsx   # TopNav (스크롤 스파이 + 다크모드 토글)
 │  ├─ PageSection.tsx  # 섹션 공통 껍데기 (앵커·폭·제목)
 │  ├─ AboutSection.tsx
+│  ├─ CareerSection.tsx   # 경력 요약
 │  ├─ ProjectCard.tsx     # 목록 카드 (대표 화면 + 제목 + 요약, 누르면 상세 팝업)
 │  ├─ ProjectDialog.tsx   # 상세 팝업 (화면 전체 · 맡은 일 · 기술 스택 · 개념)
 │  ├─ ProjectThumbnail.tsx
