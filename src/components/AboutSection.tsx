@@ -94,26 +94,33 @@ export function AboutSection() {
             </VStack>
 
             {/*
-              첫 문장은 리드(17px), 이어지는 문단은 본문(14px, secondary).
+              첫 문단은 리드(17px), 이어지는 문단은 본문(14px, secondary).
               세 문단이 같은 크기로 쌓이면 읽어야 할 벽처럼 보여서 위계를 준다.
+              문장마다 줄을 끊어 한 줄에 한 생각이 읽히게 한다.
               textWrap="pretty" 는 마지막 줄에 한 단어만 남는 것(orphan)을 막는다.
             */}
             <VStack gap={4} maxWidth={620}>
-              <Text type="body" size="lg" display="block" textWrap="pretty">
-                {profile.intro}
-              </Text>
-              <VStack gap={2}>
-                {profile.detail.map(paragraph => (
-                  <Text
-                    key={paragraph}
-                    type="body"
-                    color="secondary"
-                    display="block"
-                    textWrap="pretty">
-                    {paragraph}
+              <VStack gap={1}>
+                {profile.intro.map(sentence => (
+                  <Text key={sentence} type="body" size="lg" display="block" textWrap="pretty">
+                    {sentence}
                   </Text>
                 ))}
               </VStack>
+              {profile.detail.map(paragraph => (
+                <VStack key={paragraph[0]} gap={1}>
+                  {paragraph.map(sentence => (
+                    <Text
+                      key={sentence}
+                      type="body"
+                      color="secondary"
+                      display="block"
+                      textWrap="pretty">
+                      {sentence}
+                    </Text>
+                  ))}
+                </VStack>
+              ))}
             </VStack>
 
             <HStack gap={2} wrap="wrap">
